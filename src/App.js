@@ -1,15 +1,14 @@
+import React from 'react';
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import { useRoutes } from 'react-router-dom';
 import { ThemeProvider, StyledEngineProvider } from '@material-ui/core';
-import { useSelector } from 'react-redux';
 import GlobalStyles from './components/GlobalStyles';
 import theme from './theme';
 import routes from './routes';
 
 const App = () => {
-  const isAuthenticated = useSelector((state) => state.isAuthenticated);
+  const content = useRoutes(routes(localStorage.getItem('token')));
 
-  const content = useRoutes(routes(isAuthenticated));
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>

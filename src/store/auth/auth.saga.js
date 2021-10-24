@@ -1,14 +1,13 @@
 import { call, put, delay, takeLatest } from 'redux-saga/effects';
-import axios from 'axios';
 import { USER_LOGIN } from '../types';
 import { showError, hideError } from '../app/app.actions';
 
 const authAPI = async (user) => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  };
+  // const config = {
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   }
+  // };
   const body = JSON.stringify({
     email: user.email,
     password: user.password,
@@ -20,13 +19,13 @@ const authAPI = async (user) => {
 function* loginWorker(action) {
   try {
     const response = yield call(authAPI, action.user);
-    if (response.data) {
-      localStorage.setItem('token', response.email);
+    if (response) {
+      localStorage.setItem('token', 'da');
     } else {
       yield put(showError(response.message));
+      yield delay(4000);
+      yield put(hideError());
     }
-    yield delay(4000);
-    yield put(hideError());
   } catch (err) {
     if (err.response) {
       if (err.response.data.status === 401) {

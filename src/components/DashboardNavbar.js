@@ -26,15 +26,6 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
         <Box sx={{ flexGrow: 1 }} />
         <Hidden xlDown>
           <IconButton color="inherit" size="large">
-            <Badge
-              badgeContent={notifications.length}
-              color="primary"
-              variant="dot"
-            >
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <IconButton color="inherit" size="large">
             <InputIcon />
           </IconButton>
         </Hidden>
