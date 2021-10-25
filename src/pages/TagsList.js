@@ -44,6 +44,8 @@ export default function NestedList() {
         <List component="div" disablePadding>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemText primary="Library" />
+            <ListItemText primary="Add User" />
+            <ListItemText primary="Library" />
           </ListItemButton>
         </List>
       </Collapse>
