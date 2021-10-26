@@ -26,6 +26,10 @@
     "react/jsx-props-no-spreading": "off",
     "react/react-in-jsx-scope": "off",
     "react/require-default-props": "off",
+    "react/prop-types": "off",
+    "import/extensions": "off",
+    "arrow-body-style": ["never"],
+
     "import/no-extraneous-dependencies": [
       "error",
       {
@@ -36,6 +40,8 @@
     ],
     "linebreak-style": 0,
     "no-unused-vars": "warn",
-    "prettier/prettier": "warn"
+    "prettier/prettier": ["warn",
+{      "endOfLine": "auto"
+}    ]
   }
 }

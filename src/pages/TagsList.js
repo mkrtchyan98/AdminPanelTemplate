@@ -1,52 +1,98 @@
-import * as React from 'react';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import List from '@material-ui/core/List';
-import ListItemButton from '@material-ui/core/ListItemButton';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Collapse from '@material-ui/core/Collapse';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import SendIcon from '@material-ui/icons/Send';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import StarBorder from '@material-ui/icons/StarBorder';
+import React, { useState } from 'react';
 
-export default function NestedList() {
-  const [open, setOpen] = React.useState(true);
+import {
+  List,
+  ListItem,
+  ListItemText,
+  Collapse,
+  Button
+} from '@material-ui/core';
 
-  const handleClick = () => {
-    setOpen(!open);
-  };
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
+import menuItems from './menuItems.json';
+
+const MenuBar = () => {
+  const [itemState, setItemState] = useState(false);
+  const [list, setList] = React.useState(menuItems.data);
+  const [open, setOpen] = useState(false);
+  function handleToggleComplete(name) {
+    const newList = list.map((item) => {
+      if (item.name === name) {
+        const updatedItem = {
+          ...item,
+          isComplete: !item.isComplete
+        };
+
+        return updatedItem;
+      }
+
+      return item;
+    });
+
+    setList(newList);
+  }
+
+  // this method sets the current state of a menu item i.e whether it is in expanded or collapsed or a collapsed state
+  function handleClick(item) {
+    setItemState((prevState) => ({ [item]: !prevState[item] }));
+  }
+
+  // if the menu item doesn't have any child, this method simply returns a clickable menu item that redirects to any location and if there is no child this method uses recursion to go until the last level of children and then returns the item by the first condition.
+  function handler(children) {
+    return children.map((subOption) => {
+      if (!subOption.children) {
+        return (
+          <div key={subOption.name}>
+            <ListItem button key={subOption.name}>
+              <Button to={subOption.url}>
+                {open === subOption.name ? (
+                  <input type="text" value="input" readOnly />
+                ) : (
+                  <ListItemText
+                    inset
+                    primary={subOption.name}
+                    onDoubleClick={() => {
+                      setOpen(subOption.name);
+                    }}
+                  />
+                )}
+              </Button>
+            </ListItem>
+          </div>
+        );
+      }
+      return (
+        <div key={subOption.name}>
+          <ListItem button onClick={() => handleClick(subOption.name)}>
+            <ListItemText inset primary={subOption.name} />
+            {itemState[subOption.name] ? (
+              <ExpandMoreIcon />
+            ) : (
+              <ExpandLessIcon />
+            )}
+          </ListItem>
+          <Collapse in={itemState[subOption.name]} timeout="auto" unmountOnExit>
+            {handler(subOption.children)}
+          </Collapse>
+        </div>
+      );
+    });
+  }
 
   return (
-    <List
-      sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
-      component="nav"
-      aria-labelledby="nested-list-subheader"
-      subheader={
-        <ListSubheader component="div" id="nested-list-subheader">
-          Main
-        </ListSubheader>
-      }
-    >
-      <ListItemButton>
-        <ListItemText primary="Dashboard" />
-      </ListItemButton>
-      <ListItemButton>
-        <ListItemText primary="Users" />
-      </ListItemButton>
-      <ListItemButton onClick={handleClick}>
-        <ListItemText primary="Media" />
-        {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItemButton sx={{ pl: 4 }}>
-            <ListItemText primary="Library" />
-          </ListItemButton>
+    <div>
+      <div>
+        <List>
+          <ListItem key="menuHeading" divider disableGutters>
+            <ListItemText inset primary="Main Tags" />
+          </ListItem>
+          {handler(list)}
         </List>
-      </Collapse>
-    </List>
+      </div>
+    </div>
   );
-}
+};
+
+export default MenuBar;

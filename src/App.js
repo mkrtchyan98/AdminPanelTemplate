@@ -7,7 +7,7 @@ import theme from './theme';
 import routes from './routes';
 
 const App = () => {
-  const content = useRoutes(routes(localStorage.getItem('token')));
+  const content = useRoutes(routes(true));
 
   return (
     <StyledEngineProvider injectFirst>
