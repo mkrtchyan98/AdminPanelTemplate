@@ -12,13 +12,13 @@ export default function crudReducer(state = initialState, action) {
         tags: action.payload
       };
     }
-    case actionType.ADD_TAGS: {
+    case actionType.ADD_TAG: {
       return {
         ...state,
         tags: action.payload
       };
     }
-    case actionType.DELETED_TAGS: {
+    case actionType.DELETE_TAG: {
       return {
         ...state,
         tags: action.payload
